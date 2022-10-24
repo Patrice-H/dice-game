@@ -1,0 +1,44 @@
+import * as THREE from 'three';
+
+const scene = new THREE.Scene();
+
+const camera = new THREE.PerspectiveCamera(
+  60,
+  window.innerWidth / window.innerHeight,
+  1,
+  1000
+);
+camera.position.set(0, 20, 45);
+camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+const renderer = new THREE.WebGLRenderer({
+  antialias: true,
+  alpha: true,
+});
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+const ambientLight = new THREE.AmbientLight(0xcccccc, 0.2);
+scene.add(ambientLight);
+const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
+directionalLight.position.set(-1, 0.9, 0.4);
+scene.add(directionalLight);
+
+const geometry = new THREE.BoxGeometry(1, 1, 1);
+const material = new THREE.MeshPhongMaterial({
+  color: 0x006600,
+});
+const ground = new THREE.Mesh(geometry, material);
+ground.scale.set(50, 0.1, 50);
+ground.position.set(0, -0.05, 0);
+
+ground.name = 'ground';
+scene.add(ground);
+
+const render = () => {
+  renderer.render(scene, camera);
+  requestAnimationFrame(render);
+};
+
+render();
