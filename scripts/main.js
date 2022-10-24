@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { OrbitControls } from 'orbitControls';
 
 const scene = new THREE.Scene();
 
@@ -18,6 +19,9 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.update();
 
 const ambientLight = new THREE.AmbientLight(0xcccccc, 0.2);
 scene.add(ambientLight);
