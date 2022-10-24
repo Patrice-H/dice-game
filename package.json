@@ -1,0 +1,11 @@
+{
+  "name": "dice-game",
+  "version": "1.0.0",
+  "description": "Nice dice game using Three.js and ammo.js physics",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Patrice-H",
+  "license": "ISC"
+}
