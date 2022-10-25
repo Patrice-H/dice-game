@@ -11,6 +11,7 @@ import {
   updatePhysicsUniverse,
 } from './physicsUniverse.js';
 import { createGround, createImportedMesh } from './meshes.js';
+import { rollDice } from './utilsfunctions.js';
 
 Ammo().then((Ammo) => {
   let physicsUniverse;
@@ -27,6 +28,7 @@ Ammo().then((Ammo) => {
       deltaTime
     );
     renderer.render(scene, camera);
+    rollDice(Ammo, rigidBody_List);
     requestAnimationFrame(render);
   };
 
