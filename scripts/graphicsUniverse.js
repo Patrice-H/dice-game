@@ -34,3 +34,15 @@ export const initGraphicsUniverse = () => {
   directionalLight.position.set(-1, 0.9, 0.4);
   scene.add(directionalLight);
 };
+
+export const createGraphicGround = (scene) => {
+  const geometry = new THREE.BoxGeometry(1, 1, 1);
+  const material = new THREE.MeshPhongMaterial({
+    color: 0x006600,
+  });
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.scale.set(50, 0.1, 50);
+  mesh.position.set(0, -0.05, 0);
+  mesh.name = 'ground';
+  scene.add(mesh);
+};
