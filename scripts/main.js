@@ -5,17 +5,11 @@ import {
   camera,
   renderer,
   initGraphicsUniverse,
+  createGraphicGround,
 } from './graphicsUniverse.js';
 
-const geometry = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshPhongMaterial({
-  color: 0x006600,
-});
-const ground = new THREE.Mesh(geometry, material);
-ground.scale.set(50, 0.1, 50);
-ground.position.set(0, -0.05, 0);
-ground.name = 'ground';
-scene.add(ground);
+// Meshes
+createGraphicGround(scene);
 
 const loader = new GLTFLoader();
 loader.load(
