@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'orbitControls';
+import { GLTFLoader } from 'gltfLoader';
 
 export const scene = new THREE.Scene();
 export const camera = new THREE.PerspectiveCamera(
@@ -35,7 +36,7 @@ export const initGraphicsUniverse = () => {
   scene.add(directionalLight);
 };
 
-export const createGraphicGround = (scene) => {
+export const createGraphicGround = () => {
   const geometry = new THREE.BoxGeometry(1, 1, 1);
   const material = new THREE.MeshPhongMaterial({
     color: 0x006600,
@@ -45,4 +46,22 @@ export const createGraphicGround = (scene) => {
   mesh.position.set(0, -0.05, 0);
   mesh.name = 'ground';
   scene.add(mesh);
+};
+
+export const createGraphicImportedMesh = () => {
+  const loader = new GLTFLoader();
+  loader.load(
+    'assets/dice.gltf',
+    (gltf) => {
+      const dice = gltf.scene.children[0];
+      dice.scale.set(2, 2, 2);
+      dice.position.set(0, 2, 0);
+      dice.name = 'dice-1';
+      scene.add(dice);
+    },
+    undefined,
+    (error) => {
+      console.error(error);
+    }
+  );
 };
