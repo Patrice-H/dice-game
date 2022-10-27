@@ -9,7 +9,7 @@ export const initPhysicsUniverse = (Ammo) => {
     solver,
     collisionConfiguration
   );
-  physicsUniverse.setGravity(new Ammo.btVector3(0, -30, 0));
+  physicsUniverse.setGravity(new Ammo.btVector3(0, -10, 0));
 
   return physicsUniverse;
 };
@@ -90,6 +90,62 @@ export const createPhysicBox = (
     localInertia
   );
   let RBody = new Ammo.btRigidBody(RBody_Info);
+  physicsUniverse.addRigidBody(RBody);
+  mesh.userData.physicsBody = RBody;
+  rigidBody_List.push(mesh);
+};
+
+export const CreatePhysicCylinder = (
+  Ammo,
+  physicsUniverse,
+  rigidBody_List,
+  mesh,
+  mass,
+  rot_quaternion
+) => {
+  let quaternion;
+  if (rot_quaternion == null) {
+    quaternion = {
+      x: 0,
+      y: 0,
+      z: 0,
+      w: 1,
+    };
+  } else {
+    quaternion = rot_quaternion;
+  }
+  let transform = new Ammo.btTransform();
+  transform.setIdentity();
+  transform.setOrigin(
+    new Ammo.btVector3(mesh.position.x, mesh.position.y, mesh.position.z)
+  );
+  transform.setRotation(
+    new Ammo.btQuaternion(
+      quaternion.x,
+      quaternion.y,
+      quaternion.z,
+      quaternion.w
+    )
+  );
+  let defaultMotionState = new Ammo.btDefaultMotionState(transform);
+  console.log(mesh);
+  const radius = mesh.geometry.parameters.radiusTop;
+  const height = mesh.geometry.parameters.height * 0.5;
+
+  let structColShape = new Ammo.btCylinderShape(
+    new Ammo.btVector3(radius, height, radius)
+  );
+  structColShape.setMargin(0.05);
+  let localInertia = new Ammo.btVector3(0, 0, 0);
+  structColShape.calculateLocalInertia(mass, localInertia);
+  let RBody_Info = new Ammo.btRigidBodyConstructionInfo(
+    mass,
+    defaultMotionState,
+    structColShape,
+    localInertia
+  );
+  let RBody = new Ammo.btRigidBody(RBody_Info);
+  RBody.setFriction(1);
   physicsUniverse.addRigidBody(RBody);
   mesh.userData.physicsBody = RBody;
   rigidBody_List.push(mesh);
