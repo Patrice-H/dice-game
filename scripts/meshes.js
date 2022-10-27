@@ -1,18 +1,18 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'gltfLoader';
-import { createPhysicBox } from './physicsUniverse.js';
+import { createPhysicBox, CreatePhysicCylinder } from './physicsUniverse.js';
 
 export const createGround = (Ammo, physicsUniverse, rigidBody_List, scene) => {
-  const geometry = new THREE.BoxGeometry(1, 1, 1);
+  const geometry = new THREE.CylinderGeometry(26, 26, 0.1, 128);
   const material = new THREE.MeshPhongMaterial({
     color: 0x006600,
   });
   const mesh = new THREE.Mesh(geometry, material);
-  mesh.scale.set(50, 0.1, 50);
-  mesh.position.set(0, -0.05, 0);
-  mesh.name = 'ground';
+  mesh.position.set(0, mesh.geometry.parameters.height / 2, 0);
   scene.add(mesh);
-  createPhysicBox(Ammo, physicsUniverse, rigidBody_List, mesh, 0, null);
+  CreatePhysicCylinder(Ammo, physicsUniverse, rigidBody_List, mesh, 0, null);
+
+  return mesh;
 };
 
 export const createImportedMesh = (
@@ -27,7 +27,7 @@ export const createImportedMesh = (
     (gltf) => {
       const dice = gltf.scene.children[0];
       dice.scale.set(2, 2, 2);
-      dice.position.set(0, 20, 0);
+      dice.position.set(-40, 20, 0);
       dice.name = 'dice-1';
       scene.add(dice);
       createPhysicBox(Ammo, physicsUniverse, rigidBody_List, dice, 1, null);
