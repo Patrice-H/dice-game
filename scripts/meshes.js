@@ -27,7 +27,7 @@ export const createImportedMesh = (
     (gltf) => {
       const dice = gltf.scene.children[0];
       dice.scale.set(2, 2, 2);
-      dice.position.set(-40, 20, 0);
+      dice.position.set(-48, 35, 0);
       dice.name = 'dice-1';
       scene.add(dice);
       createPhysicBox(Ammo, physicsUniverse, rigidBody_List, dice, 1, null);
