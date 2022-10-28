@@ -24,6 +24,27 @@ const getResults = (rotation) => {
   return result.display;
 };
 
+export const displayEndGame = (scene, rigidBody_List, start) => {
+  if (
+    start &&
+    rigidBody_List[73] &&
+    rigidBody_List[74] &&
+    !rigidBody_List[73].userData.physicsBody.isActive() &&
+    !rigidBody_List[74].userData.physicsBody.isActive()
+  ) {
+    console.log('dice-1 : ', getResults(scene.children[3].rotation));
+    console.log('dice-2 : ', getResults(scene.children[4].rotation));
+    console.log('dice-3 : ', getResults(scene.children[5].rotation));
+    console.log('dice-4 : ', getResults(scene.children[6].rotation));
+    console.log('dice-5 : ', getResults(scene.children[7].rotation));
+    console.log('end game !');
+
+    return false;
+  } else {
+    return start;
+  }
+};
+
 export const rollDice = (Ammo, rigidBody_List) => {
   const angle = new Ammo.btVector3(0, 0, -8);
   for (let i = 0; i < rigidBody_List.length; i++) {

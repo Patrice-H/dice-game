@@ -11,12 +11,13 @@ import {
   updatePhysicsUniverse,
 } from './physicsUniverse.js';
 import { createDiceTrack, createDices } from './meshes.js';
-import { rollDice, throwDice } from './utilsfunctions.js';
+import { rollDice, throwDice, displayEndGame } from './utilsfunctions.js';
 
 Ammo().then((Ammo) => {
   let physicsUniverse;
   let tmpTransformation;
   let rigidBody_List = new Array();
+  let start = true;
 
   // Render scene
   const render = () => {
@@ -27,9 +28,10 @@ Ammo().then((Ammo) => {
       tmpTransformation,
       deltaTime
     );
-    renderer.render(scene, camera);
     rollDice(Ammo, rigidBody_List);
     throwDice(Ammo, rigidBody_List);
+    start = displayEndGame(scene, rigidBody_List, start);
+    renderer.render(scene, camera);
     requestAnimationFrame(render);
   };
 
