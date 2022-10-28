@@ -2,39 +2,65 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'gltfLoader';
 import { createPhysicBox, CreatePhysicCylinder } from './physicsUniverse.js';
 
-export const createGround = (Ammo, physicsUniverse, rigidBody_List, scene) => {
+export const createDiceTrack = (
+  Ammo,
+  physicsUniverse,
+  rigidBody_List,
+  scene
+) => {
+  const diceTrack = new THREE.Group();
+  diceTrack.name = 'diceTrack';
+
+  const loader = new GLTFLoader();
+  loader.load(
+    'assets/track.gltf',
+    (gltf) => {
+      const trackEdge = gltf.scene.children[0];
+      trackEdge.scale.set(20.5, 20.5, 20.5);
+      trackEdge.name = 'trackEdge';
+      trackEdge.userData.radius = 20;
+      trackEdge.userData.height = 5;
+      diceTrack.add(trackEdge);
+    },
+    undefined,
+    (error) => {
+      console.error(error);
+    }
+  );
   const geometry = new THREE.CylinderGeometry(26, 26, 0.1, 128);
   const material = new THREE.MeshPhongMaterial({
     color: 0x006600,
   });
-  const mesh = new THREE.Mesh(geometry, material);
-  mesh.position.set(0, mesh.geometry.parameters.height / 2, 0);
-  scene.add(mesh);
-  CreatePhysicCylinder(Ammo, physicsUniverse, rigidBody_List, mesh, 0, null);
-
-  return mesh;
+  const trackGround = new THREE.Mesh(geometry, material);
+  trackGround.position.set(0, mesh.geometry.parameters.height / 2, 0);
+  diceTrack.add(trackGround);
+  scene.add(diceTrack);
+  CreatePhysicCylinder(
+    Ammo,
+    physicsUniverse,
+    rigidBody_List,
+    trackGround,
+    0,
+    null
+  );
 };
 
 export const createImportedMesh = (
   Ammo,
   physicsUniverse,
   rigidBody_List,
-  scene,
-  meshName
+  scene
 ) => {
   const loader = new GLTFLoader();
   loader.load(
-    `assets/${meshName}.gltf`,
+    'assets/dice.gltf',
     (gltf) => {
       const mesh = gltf.scene.children[0];
       mesh.scale.set(2, 2, 2);
       mesh.position.set(-48, 35, 0);
-      const name = meshName === 'dice' ? 'dice-1' : meshName;
-      mesh.name = name;
+      mesh.name = 'dice-1';
       scene.add(mesh);
-      const mass = meshName === 'dice' ? 1 : 0;
-      createPhysicBox(Ammo, physicsUniverse, rigidBody_List, mesh, mass, null);
-      return mesh;
+      createPhysicBox(Ammo, physicsUniverse, rigidBody_List, mesh, 1, null);
     },
     undefined,
     (error) => {

@@ -10,7 +10,7 @@ import {
   initPhysicsUniverse,
   updatePhysicsUniverse,
 } from './physicsUniverse.js';
-import { createGround, createImportedMesh } from './meshes.js';
+import { createDiceTrack, createImportedMesh } from './meshes.js';
 import { rollDice, throwDice } from './utilsfunctions.js';
 
 Ammo().then((Ammo) => {
@@ -38,8 +38,8 @@ Ammo().then((Ammo) => {
   physicsUniverse = initPhysicsUniverse(Ammo);
 
   // Add meshes
-  createGround(Ammo, physicsUniverse, rigidBody_List, scene);
-  createImportedMesh(Ammo, physicsUniverse, rigidBody_List, scene, 'dice');
+  createDiceTrack(Ammo, physicsUniverse, rigidBody_List, scene);
+  createImportedMesh(Ammo, physicsUniverse, rigidBody_List, scene);
 
   initGraphicsUniverse();
   render();
