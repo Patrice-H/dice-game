@@ -19,19 +19,22 @@ export const createImportedMesh = (
   Ammo,
   physicsUniverse,
   rigidBody_List,
-  scene
+  scene,
+  meshName
 ) => {
   const loader = new GLTFLoader();
   loader.load(
-    'assets/dice.gltf',
+    `assets/${meshName}.gltf`,
     (gltf) => {
-      const dice = gltf.scene.children[0];
-      dice.scale.set(2, 2, 2);
-      dice.position.set(-48, 35, 0);
-      dice.name = 'dice-1';
-      scene.add(dice);
-      createPhysicBox(Ammo, physicsUniverse, rigidBody_List, dice, 1, null);
-      return dice;
+      const mesh = gltf.scene.children[0];
+      mesh.scale.set(2, 2, 2);
+      mesh.position.set(-48, 35, 0);
+      const name = meshName === 'dice' ? 'dice-1' : meshName;
+      mesh.name = name;
+      scene.add(mesh);
+      const mass = meshName === 'dice' ? 1 : 0;
+      createPhysicBox(Ammo, physicsUniverse, rigidBody_List, mesh, mass, null);
+      return mesh;
     },
     undefined,
     (error) => {

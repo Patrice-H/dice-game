@@ -39,7 +39,7 @@ Ammo().then((Ammo) => {
 
   // Add meshes
   createGround(Ammo, physicsUniverse, rigidBody_List, scene);
-  createImportedMesh(Ammo, physicsUniverse, rigidBody_List, scene);
+  createImportedMesh(Ammo, physicsUniverse, rigidBody_List, scene, 'dice');
 
   initGraphicsUniverse();
   render();
