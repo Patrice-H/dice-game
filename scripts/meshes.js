@@ -2,6 +2,19 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'gltfLoader';
 import { createPhysicBox, CreatePhysicCylinder } from './physicsUniverse.js';
 
+const createGraphicBox = (scale, position) => {
+  const geometry = new THREE.BoxGeometry(1, 1, 1);
+  const material = new THREE.MeshPhongMaterial({
+    color: 0xff0000,
+  });
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.scale.set(scale.x, scale.y, scale.z);
+  mesh.position.set(position.x, position.y, position.z);
+  mesh.visible = false;
+
+  return mesh;
+};
+
 export const createDiceTrack = (
   Ammo,
   physicsUniverse,
@@ -27,14 +40,15 @@ export const createDiceTrack = (
       console.error(error);
     }
   );
-  const geometry = new THREE.CylinderGeometry(26, 26, 0.1, 128);
-  const material = new THREE.MeshPhongMaterial({
+
+  const trackGroundGeometry = new THREE.CylinderGeometry(26, 26, 0.1, 128);
+  const trackGroundMaterial = new THREE.MeshPhongMaterial({
     color: 0x006600,
   });
-  const trackGround = new THREE.Mesh(geometry, material);
-  trackGround.position.set(0, mesh.geometry.parameters.height / 2, 0);
+  const trackGround = new THREE.Mesh(trackGroundGeometry, trackGroundMaterial);
+  trackGround.position.set(0, trackGround.geometry.parameters.height / 2, 0);
+  trackGround.name = 'trackGround';
   diceTrack.add(trackGround);
-  scene.add(diceTrack);
   CreatePhysicCylinder(
     Ammo,
     physicsUniverse,
@@ -43,6 +57,31 @@ export const createDiceTrack = (
     0,
     null
   );
+
+  const trackWallsHidden = new THREE.Group();
+  trackWallsHidden.name = 'trackWallsHidden';
+  for (let i = 1; i <= 72; i++) {
+    let angle = Math.PI / 36;
+
+    let wall = createGraphicBox(
+      new THREE.Vector3(0.1, 5, 2),
+      new THREE.Vector3(
+        26 * Math.cos(angle * i),
+        2.5,
+        -26 * Math.sin(angle * i)
+      )
+    );
+    wall.name = `wall-${i}`;
+    trackWallsHidden.add(wall);
+    createPhysicBox(Ammo, physicsUniverse, rigidBody_List, wall, 0, {
+      x: 0,
+      y: Math.sin((angle * i) / 2),
+      z: 0,
+      w: Math.cos((angle * i) / 2),
+    });
+  }
+  diceTrack.add(trackWallsHidden);
+  scene.add(diceTrack);
 };
 
 export const createImportedMesh = (
