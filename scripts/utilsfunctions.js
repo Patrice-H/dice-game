@@ -30,3 +30,10 @@ export const throwDice = (Ammo, rigidBody_List) => {
     }
   }
 };
+
+export const getRandomPosition = () => {
+  let posX = Math.floor(Math.random() * 6);
+  let posY = Math.floor(Math.random() * 6);
+
+  return new THREE.Vector3(-50 + posX, 30 + posY, 0);
+};
