@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'gltfLoader';
 import { createPhysicBox, CreatePhysicCylinder } from './physicsUniverse.js';
+import { getRandonRotation } from '../data/randomRotation.js';
 
 const createGraphicBox = (scale, position) => {
   const geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -99,7 +100,13 @@ export const createImportedMesh = (
       mesh.position.set(-48, 30, 0);
       mesh.name = 'dice-1';
       scene.add(mesh);
-      createPhysicBox(Ammo, physicsUniverse, rigidBody_List, mesh, 2, null);
+      const randomRotation = getRandonRotation();
+      createPhysicBox(Ammo, physicsUniverse, rigidBody_List, mesh, 2, {
+        x: randomRotation.x,
+        y: randomRotation.y,
+        z: randomRotation.z,
+        w: randomRotation.w,
+      });
     },
     undefined,
     (error) => {
