@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'gltfLoader';
 import { createPhysicBox, CreatePhysicCylinder } from './physicsUniverse.js';
 import { getRandonRotation } from '../data/randomRotation.js';
+import { getRandomPosition } from './utilsfunctions.js';
 
 const createGraphicBox = (scale, position) => {
   const geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -91,6 +92,53 @@ export const createImportedMesh = (
   rigidBody_List,
   scene
 ) => {
+  const randomPosition = getRandomPosition();
+  for (let i = 0; i < 5; i++) {
+    let posX, posY, posZ;
+    if (i === 0) {
+      posX = randomPosition.x;
+      posY = randomPosition.y;
+      posZ = randomPosition.z;
+    }
+    if (i % 2 !== 0) {
+      posX = randomPosition.x + 3;
+      posZ = randomPosition.z + 3;
+    }
+    if (i % 2 === 0 && i !== 0) {
+      posX = randomPosition.x - 3;
+      posZ = randomPosition.z - 3;
+    }
+    if (i > 2) {
+      posY = randomPosition.y - 3;
+    }
+    if (i < 3 && i !== 0) {
+      posY = randomPosition.y + 3;
+    }
+    const loader = new GLTFLoader();
+    loader.load(
+      'assets/dice.gltf',
+      (gltf) => {
+        const dice = gltf.scene.children[0];
+        dice.scale.set(2, 2, 2);
+        dice.position.set(posX, posY, posZ);
+        dice.name = `dice-${i + 1}`;
+        scene.add(dice);
+        const randomRotation = getRandonRotation();
+        createPhysicBox(Ammo, physicsUniverse, rigidBody_List, dice, 1, {
+          x: randomRotation.x,
+          y: randomRotation.y,
+          z: randomRotation.z,
+          w: randomRotation.w,
+        });
+      },
+      undefined,
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
+
+  /*
   const loader = new GLTFLoader();
   loader.load(
     'assets/dice.gltf',
@@ -113,4 +161,5 @@ export const createImportedMesh = (
       console.error(error);
     }
   );
+  */
 };

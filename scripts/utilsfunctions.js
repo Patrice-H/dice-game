@@ -1,3 +1,5 @@
+import * as THREE from 'three';
+
 export const rollDice = (Ammo, rigidBody_List) => {
   const angle = new Ammo.btVector3(0, 0, -8);
   for (let i = 0; i < rigidBody_List.length; i++) {
