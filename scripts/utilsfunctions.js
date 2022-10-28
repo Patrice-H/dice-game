@@ -1,4 +1,28 @@
 import * as THREE from 'three';
+import { diceRotation } from '../data/rotation.js';
+
+const controlRotation = (rot) => {
+  if (rot === -3.14) return true;
+  if (rot === -1.57) return true;
+  if (rot === 0) return true;
+  if (rot === 1.57) return true;
+  if (rot === 3.14) return true;
+
+  return false;
+};
+
+const getResults = (rotation) => {
+  let rotX = parseFloat(rotation.x.toFixed(2));
+  let rotZ = parseFloat(rotation.z.toFixed(2));
+  if (!controlRotation(rotZ)) {
+    rotZ = 0;
+  }
+  const result = diceRotation.find(
+    (dice) => dice.x === rotX && dice.z === rotZ
+  );
+
+  return result.display;
+};
 
 export const rollDice = (Ammo, rigidBody_List) => {
   const angle = new Ammo.btVector3(0, 0, -8);
@@ -27,8 +51,6 @@ export const throwDice = (Ammo, rigidBody_List) => {
       rigidBody_List[i].userData.physicsBody.setLinearVelocity(
         new Ammo.btVector3(strenghtX, strenghtY, 0)
       );
-      //console.log(strenghtX, strenghtY);
-      //console.log(rigidBody_List[i].position.x, rigidBody_List[i].position.y);
     }
   }
 };
