@@ -86,12 +86,7 @@ export const createDiceTrack = (
   scene.add(diceTrack);
 };
 
-export const createImportedMesh = (
-  Ammo,
-  physicsUniverse,
-  rigidBody_List,
-  scene
-) => {
+export const createDices = (Ammo, physicsUniverse, rigidBody_List, scene) => {
   const randomPosition = getRandomPosition();
   for (let i = 0; i < 5; i++) {
     let posX, posY, posZ;
@@ -137,29 +132,4 @@ export const createImportedMesh = (
       }
     );
   }
-
-  /*
-  const loader = new GLTFLoader();
-  loader.load(
-    'assets/dice.gltf',
-    (gltf) => {
-      const mesh = gltf.scene.children[0];
-      mesh.scale.set(2, 2, 2);
-      mesh.position.set(-48, 30, 0);
-      mesh.name = 'dice-1';
-      scene.add(mesh);
-      const randomRotation = getRandonRotation();
-      createPhysicBox(Ammo, physicsUniverse, rigidBody_List, mesh, 2, {
-        x: randomRotation.x,
-        y: randomRotation.y,
-        z: randomRotation.z,
-        w: randomRotation.w,
-      });
-    },
-    undefined,
-    (error) => {
-      console.error(error);
-    }
-  );
-  */
 };
