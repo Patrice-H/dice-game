@@ -9,7 +9,7 @@ export const initPhysicsUniverse = (Ammo) => {
     solver,
     collisionConfiguration
   );
-  physicsUniverse.setGravity(new Ammo.btVector3(0, -10, 0));
+  physicsUniverse.setGravity(new Ammo.btVector3(0, -18, 0));
 
   return physicsUniverse;
 };
@@ -128,7 +128,6 @@ export const CreatePhysicCylinder = (
     )
   );
   let defaultMotionState = new Ammo.btDefaultMotionState(transform);
-  console.log(mesh);
   const radius = mesh.geometry.parameters.radiusTop;
   const height = mesh.geometry.parameters.height * 0.5;
 

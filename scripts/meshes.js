@@ -96,10 +96,10 @@ export const createImportedMesh = (
     (gltf) => {
       const mesh = gltf.scene.children[0];
       mesh.scale.set(2, 2, 2);
-      mesh.position.set(-48, 35, 0);
+      mesh.position.set(-48, 30, 0);
       mesh.name = 'dice-1';
       scene.add(mesh);
-      createPhysicBox(Ammo, physicsUniverse, rigidBody_List, mesh, 1, null);
+      createPhysicBox(Ammo, physicsUniverse, rigidBody_List, mesh, 2, null);
     },
     undefined,
     (error) => {
