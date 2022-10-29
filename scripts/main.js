@@ -13,15 +13,31 @@ import {
 import { createDiceTrack, createDices } from './meshes.js';
 import { rollDice, throwDice, displayEndGame } from './utilsfunctions.js';
 
+let isGameStart = false;
+let areDiceCast = false;
+let rigidBody_List = new Array();
+const launchGame = () => {
+  isGameStart = true;
+  if (scene.children.length > 3) {
+    for (let i = 0; i < 5; i++) {
+      scene.children.pop();
+      rigidBody_List.pop();
+    }
+  }
+};
+
 Ammo().then((Ammo) => {
   let physicsUniverse;
   let tmpTransformation;
-  let rigidBody_List = new Array();
-  let start = true;
 
   // Render scene
   const render = () => {
     let deltaTime = clock.getDelta();
+    if (isGameStart) {
+      createDices(Ammo, physicsUniverse, rigidBody_List, scene);
+      areDiceCast = true;
+    }
+    isGameStart = false;
     updatePhysicsUniverse(
       physicsUniverse,
       rigidBody_List,
@@ -30,7 +46,7 @@ Ammo().then((Ammo) => {
     );
     rollDice(Ammo, rigidBody_List);
     throwDice(Ammo, rigidBody_List);
-    start = displayEndGame(scene, rigidBody_List, start);
+    areDiceCast = displayEndGame(scene, rigidBody_List, areDiceCast);
     renderer.render(scene, camera);
     requestAnimationFrame(render);
   };
@@ -41,8 +57,12 @@ Ammo().then((Ammo) => {
 
   // Add meshes
   createDiceTrack(Ammo, physicsUniverse, rigidBody_List, scene);
-  createDices(Ammo, physicsUniverse, rigidBody_List, scene);
 
   initGraphicsUniverse();
   render();
+});
+
+const button = document.getElementById('launcher');
+button.addEventListener('click', () => {
+  launchGame();
 });
