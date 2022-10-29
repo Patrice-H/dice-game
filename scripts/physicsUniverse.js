@@ -9,7 +9,7 @@ export const initPhysicsUniverse = (Ammo) => {
     solver,
     collisionConfiguration
   );
-  physicsUniverse.setGravity(new Ammo.btVector3(0, -18, 0));
+  physicsUniverse.setGravity(new Ammo.btVector3(0, -30, 0));
 
   return physicsUniverse;
 };
