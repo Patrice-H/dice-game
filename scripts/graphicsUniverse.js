@@ -16,7 +16,7 @@ export const clock = new THREE.Clock();
 
 export const initGraphicsUniverse = () => {
   // Camera
-  camera.position.set(0, 20, 45);
+  camera.position.set(0, 30, 60);
   camera.lookAt(new THREE.Vector3(0, 0, 0));
 
   // Renderer
