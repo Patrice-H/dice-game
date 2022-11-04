@@ -17,11 +17,19 @@ import { rollDice, throwDice, displayEndGame } from './utilsfunctions.js';
 let isGameStart = false;
 let areDiceCast = false;
 let rigidBody_List = new Array();
+
 const mouse = new THREE.Vector2();
+const raycaster = new THREE.Raycaster();
 
 const onMouseMove = (event) => {
   mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
   mouse.y = -((event.clientY / window.innerHeight) * 2 - 1);
+};
+
+const onMouseUp = () => {
+  raycaster.setFromCamera(mouse, camera);
+  const found = raycaster.intersectObjects(scene.children);
+  found[0] && console.log(found[0].object.parent.name);
 };
 
 const launchGame = () => {
@@ -75,3 +83,4 @@ button.addEventListener('click', () => {
   launchGame();
 });
 document.addEventListener('mousemove', (event) => onMouseMove(event));
+document.addEventListener('mouseup', onMouseUp);
