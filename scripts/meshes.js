@@ -25,6 +25,7 @@ export const createDiceTrack = (
 ) => {
   const diceTrack = new THREE.Group();
   diceTrack.name = 'diceTrack';
+  diceTrack.userData.selected = true;
 
   const loader = new GLTFLoader();
   loader.load(
@@ -117,6 +118,7 @@ export const createDices = (Ammo, physicsUniverse, rigidBody_List, scene) => {
         dice.scale.set(2, 2, 2);
         dice.position.set(posX, posY, posZ);
         dice.name = `dice-${i + 1}`;
+        dice.userData.selected = true;
         scene.add(dice);
         const randomRotation = getRandonRotation();
         createPhysicBox(Ammo, physicsUniverse, rigidBody_List, dice, 1, {

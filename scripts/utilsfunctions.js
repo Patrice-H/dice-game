@@ -91,3 +91,16 @@ export const getRandomPosition = () => {
 
   return new THREE.Vector3(-50 + posX, 30 + posY, 0);
 };
+
+export const getSelectedObject = (objectsTouched) => {
+  if (objectsTouched.length === 0) {
+    return 'no object selected';
+  }
+  for (let i = 0; i < objectsTouched.length; i++) {
+    if (objectsTouched[i].object.parent.userData.selected) {
+      return objectsTouched[i].object.parent.name;
+    }
+  }
+
+  return 'no object selected';
+};

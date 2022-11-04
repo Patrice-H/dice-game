@@ -12,7 +12,12 @@ import {
   updatePhysicsUniverse,
 } from './physicsUniverse.js';
 import { createDiceTrack, createDices } from './meshes.js';
-import { rollDice, throwDice, displayEndGame } from './utilsfunctions.js';
+import {
+  rollDice,
+  throwDice,
+  displayEndGame,
+  getSelectedObject,
+} from './utilsfunctions.js';
 
 let isGameStart = false;
 let areDiceCast = false;
@@ -28,8 +33,8 @@ const onMouseMove = (event) => {
 
 const onMouseUp = () => {
   raycaster.setFromCamera(mouse, camera);
-  const found = raycaster.intersectObjects(scene.children);
-  found[0] && console.log(found[0].object.parent.name);
+  const objectsTouched = raycaster.intersectObjects(scene.children);
+  console.log(getSelectedObject(objectsTouched));
 };
 
 const launchGame = () => {
