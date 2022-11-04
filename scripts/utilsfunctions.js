@@ -24,24 +24,33 @@ const getResults = (rotation) => {
   return result.display;
 };
 
-export const displayEndGame = (scene, rigidBody_List, start) => {
-  if (
-    start &&
-    rigidBody_List[73] &&
-    rigidBody_List[74] &&
-    !rigidBody_List[73].userData.physicsBody.isActive() &&
-    !rigidBody_List[74].userData.physicsBody.isActive()
-  ) {
-    console.log('dice-1 : ', getResults(scene.children[3].rotation));
-    console.log('dice-2 : ', getResults(scene.children[4].rotation));
-    console.log('dice-3 : ', getResults(scene.children[5].rotation));
-    console.log('dice-4 : ', getResults(scene.children[6].rotation));
-    console.log('dice-5 : ', getResults(scene.children[7].rotation));
+const isDiceStopMoving = (rigidBody_List) => {
+  let result = true;
+  for (let i = 0; i < 5; i++) {
+    if (
+      !rigidBody_List[i + 73] ||
+      rigidBody_List[i + 73].userData.physicsBody.isActive()
+    ) {
+      result = false;
+    }
+  }
+
+  return result;
+};
+
+export const displayEndGame = (scene, rigidBody_List, areDiceCast) => {
+  if (areDiceCast && isDiceStopMoving(rigidBody_List)) {
+    for (let i = 0; i < 5; i++) {
+      console.log(
+        `dice-${i + 1} : `,
+        getResults(scene.children[i + 3].rotation)
+      );
+    }
     console.log('end game !');
 
     return false;
   } else {
-    return start;
+    return areDiceCast;
   }
 };
 
