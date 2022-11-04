@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 import Ammo from './ammo.js';
 import {
   scene,
@@ -16,6 +17,13 @@ import { rollDice, throwDice, displayEndGame } from './utilsfunctions.js';
 let isGameStart = false;
 let areDiceCast = false;
 let rigidBody_List = new Array();
+const mouse = new THREE.Vector2();
+
+const onMouseMove = (event) => {
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -((event.clientY / window.innerHeight) * 2 - 1);
+};
+
 const launchGame = () => {
   isGameStart = true;
   if (scene.children.length > 3) {
@@ -66,3 +74,4 @@ const button = document.getElementById('launcher');
 button.addEventListener('click', () => {
   launchGame();
 });
+document.addEventListener('mousemove', (event) => onMouseMove(event));
