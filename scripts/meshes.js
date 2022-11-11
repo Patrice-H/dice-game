@@ -1,8 +1,8 @@
-import * as THREE from 'three';
-import { GLTFLoader } from 'gltfLoader';
-import { createPhysicBox, CreatePhysicCylinder } from './physicsUniverse.js';
-import { getRandonRotation } from '../data/randomRotation.js';
-import { getRandomPosition } from './utilsfunctions.js';
+import * as THREE from "three";
+import { GLTFLoader } from "gltfLoader";
+import { createPhysicBox, CreatePhysicCylinder } from "./physicsUniverse.js";
+import { getRandonRotation } from "../data/randomRotation.js";
+import { getRandomPosition } from "./utilsfunctions.js";
 
 const createGraphicBox = (scale, position) => {
   const geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -24,16 +24,16 @@ export const createDiceTrack = (
   scene
 ) => {
   const diceTrack = new THREE.Group();
-  diceTrack.name = 'diceTrack';
+  diceTrack.name = "diceTrack";
   diceTrack.userData.selected = true;
 
   const loader = new GLTFLoader();
   loader.load(
-    'assets/track.gltf',
+    "assets/track.gltf",
     (gltf) => {
       const trackEdge = gltf.scene.children[0];
       trackEdge.scale.set(20.5, 20.5, 20.5);
-      trackEdge.name = 'trackEdge';
+      trackEdge.name = "trackEdge";
       trackEdge.userData.radius = 20;
       trackEdge.userData.height = 5;
       diceTrack.add(trackEdge);
@@ -50,7 +50,7 @@ export const createDiceTrack = (
   });
   const trackGround = new THREE.Mesh(trackGroundGeometry, trackGroundMaterial);
   trackGround.position.set(0, trackGround.geometry.parameters.height / 2, 0);
-  trackGround.name = 'trackGround';
+  trackGround.name = "trackGround";
   diceTrack.add(trackGround);
   CreatePhysicCylinder(
     Ammo,
@@ -62,7 +62,7 @@ export const createDiceTrack = (
   );
 
   const trackWallsHidden = new THREE.Group();
-  trackWallsHidden.name = 'trackWallsHidden';
+  trackWallsHidden.name = "trackWallsHidden";
   for (let i = 1; i <= 72; i++) {
     let angle = Math.PI / 36;
 
@@ -112,7 +112,7 @@ export const createDices = (Ammo, physicsUniverse, rigidBody_List, scene) => {
     }
     const loader = new GLTFLoader();
     loader.load(
-      'assets/dice.gltf',
+      "assets/dice.gltf",
       (gltf) => {
         const dice = gltf.scene.children[0];
         dice.scale.set(2, 2, 2);
@@ -134,4 +134,56 @@ export const createDices = (Ammo, physicsUniverse, rigidBody_List, scene) => {
       }
     );
   }
+};
+
+export const createGraphicDiceTrack = () => {
+  const diceTrack = new THREE.Group();
+  diceTrack.name = "diceTrack";
+  diceTrack.userData.selected = true;
+
+  const loader = new GLTFLoader();
+  loader.load(
+    "assets/track.gltf",
+    (gltf) => {
+      const trackEdge = gltf.scene.children[0];
+      trackEdge.scale.set(20.5, 20.5, 20.5);
+      trackEdge.name = "trackEdge";
+      trackEdge.userData.radius = 20;
+      trackEdge.userData.height = 5;
+      diceTrack.add(trackEdge);
+    },
+    undefined,
+    (error) => {
+      console.error(error);
+    }
+  );
+
+  const trackGroundGeometry = new THREE.CylinderGeometry(26, 26, 0.1, 128);
+  const trackGroundMaterial = new THREE.MeshPhongMaterial({
+    color: 0x006600,
+  });
+  const trackGround = new THREE.Mesh(trackGroundGeometry, trackGroundMaterial);
+  trackGround.position.set(0, trackGround.geometry.parameters.height / 2, 0);
+  trackGround.name = "trackGround";
+  diceTrack.add(trackGround);
+
+  const trackWallsHidden = new THREE.Group();
+  trackWallsHidden.name = "trackWallsHidden";
+  for (let i = 1; i <= 72; i++) {
+    let angle = Math.PI / 36;
+
+    let wall = createGraphicBox(
+      new THREE.Vector3(0.1, 5, 2),
+      new THREE.Vector3(
+        26 * Math.cos(angle * i),
+        2.5,
+        -26 * Math.sin(angle * i)
+      )
+    );
+    wall.name = `wall-${i}`;
+    trackWallsHidden.add(wall);
+  }
+  diceTrack.add(trackWallsHidden);
+
+  return diceTrack;
 };
