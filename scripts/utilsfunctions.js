@@ -1,5 +1,5 @@
-import * as THREE from 'three';
-import { diceRotation } from '../data/rotation.js';
+import * as THREE from "three";
+import { diceRotation } from "../data/rotation.js";
 
 const controlRotation = (rot) => {
   if (rot === -3.14) return true;
@@ -46,7 +46,7 @@ export const displayEndGame = (scene, rigidBody_List) => {
         getResults(scene.children[i + 3].rotation)
       );
     }
-    console.log('end game !');
+    console.log("end game !");
 
     return false;
   } else {
@@ -57,7 +57,7 @@ export const displayEndGame = (scene, rigidBody_List) => {
 export const rollDice = (Ammo, rigidBody_List) => {
   const angle = new Ammo.btVector3(0, 0, -8);
   for (let i = 0; i < rigidBody_List.length; i++) {
-    if (rigidBody_List[i].userData.name === 'dice') {
+    if (rigidBody_List[i].userData.name === "dice") {
       if (
         rigidBody_List[i].position.y >
         rigidBody_List[i].scale.x * Math.sqrt(3)
@@ -94,7 +94,7 @@ export const getRandomPosition = () => {
 
 export const getSelectedObject = (objectsTouched) => {
   if (objectsTouched.length === 0) {
-    return 'no object selected';
+    return "no object selected";
   }
   for (let i = 0; i < objectsTouched.length; i++) {
     if (objectsTouched[i].object.parent.userData.selected) {
@@ -102,5 +102,14 @@ export const getSelectedObject = (objectsTouched) => {
     }
   }
 
-  return 'no object selected';
+  return "no object selected";
+};
+
+export const resetGame = (scene, rigidBody_List, dicesInGame) => {
+  if (scene.children.length > 3) {
+    for (let i = 0; i < dicesInGame; i++) {
+      scene.children.pop();
+      rigidBody_List.pop();
+    }
+  }
 };
