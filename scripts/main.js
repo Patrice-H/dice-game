@@ -1,28 +1,31 @@
-import * as THREE from 'three';
-import Ammo from './ammo.js';
+import * as THREE from "three";
+import Ammo from "./ammo.js";
 import {
   scene,
   camera,
   renderer,
   clock,
   initGraphicsUniverse,
-} from './graphicsUniverse.js';
+} from "./graphicsUniverse.js";
 import {
   initPhysicsUniverse,
   updatePhysicsUniverse,
-} from './physicsUniverse.js';
-import { createDiceTrack, createDices } from './meshes.js';
+  createPhysicTrackGround,
+} from "./physicsUniverse.js";
+import { createDices, createGraphicDiceTrack } from "./meshes.js";
 import {
   rollDice,
   throwDice,
   displayEndGame,
   getSelectedObject,
   resetGame,
-} from './utilsfunctions.js';
+} from "./utilsfunctions.js";
 
+let isGameRunning = false;
 let isGameStart = false;
-let areDiceCast = false;
 let rigidBody_List = new Array();
+let physicsUniverse = null;
+let tmpTransformation = null;
 
 const mouse = new THREE.Vector2();
 const raycaster = new THREE.Raycaster();
@@ -38,50 +41,76 @@ const onMouseUp = () => {
   console.log(getSelectedObject(objectsTouched));
 };
 
-const launchGame = () => {
-  isGameStart = true;
-  resetGame(scene, rigidBody_List, 5);
+const render = (f) => {
+  renderer.render(scene, camera);
+  requestAnimationFrame(f);
 };
 
-Ammo().then((Ammo) => {
-  let physicsUniverse;
-  let tmpTransformation;
+const initStaticScene = () => {
+  if (scene.children.length === 0) {
+    const diceTrack = createGraphicDiceTrack();
+    scene.add(diceTrack);
+    initGraphicsUniverse();
+    //console.log(scene);
+  }
+  render(initStaticScene);
+};
 
-  // Render scene
-  const render = () => {
-    let deltaTime = clock.getDelta();
-    if (isGameStart) {
-      createDices(Ammo, physicsUniverse, rigidBody_List, scene);
-      areDiceCast = true;
-    }
-    isGameStart = false;
-    updatePhysicsUniverse(
-      physicsUniverse,
-      rigidBody_List,
-      tmpTransformation,
-      deltaTime
-    );
-    rollDice(Ammo, rigidBody_List);
-    throwDice(Ammo, rigidBody_List);
-    areDiceCast = displayEndGame(scene, rigidBody_List, areDiceCast);
-    renderer.render(scene, camera);
-    requestAnimationFrame(render);
-  };
+const startAmmo = () => {
+  if (isGameRunning) {
+    Ammo().then((Ammo) => {
+      const runGame = () => {
+        let deltaTime = clock.getDelta();
+        if (isGameStart) {
+          createDices(Ammo, physicsUniverse, rigidBody_List, scene);
+        }
+        isGameStart = false;
+        updatePhysicsUniverse(
+          physicsUniverse,
+          rigidBody_List,
+          tmpTransformation,
+          deltaTime
+        );
+        rollDice(Ammo, rigidBody_List);
+        throwDice(Ammo, rigidBody_List);
+        isGameRunning = displayEndGame(scene, rigidBody_List);
+        if (!isGameRunning) {
+          physicsUniverse = null;
+          tmpTransformation = null;
+          rigidBody_List = new Array();
 
-  // init
-  tmpTransformation = new Ammo.btTransform();
-  physicsUniverse = initPhysicsUniverse(Ammo);
+          return;
+        } else {
+          render(runGame);
+        }
+      };
 
-  // Add meshes
-  createDiceTrack(Ammo, physicsUniverse, rigidBody_List, scene);
+      // init
+      physicsUniverse = initPhysicsUniverse(Ammo);
+      tmpTransformation = new Ammo.btTransform();
+      createPhysicTrackGround(
+        Ammo,
+        physicsUniverse,
+        rigidBody_List,
+        scene.children[0]
+      );
+      runGame();
+    });
+  }
+};
 
-  initGraphicsUniverse();
-  render();
-});
+const launchGame = () => {
+  isGameRunning = true;
+  isGameStart = true;
+  resetGame(scene, rigidBody_List, 5);
+  startAmmo();
+};
 
-const button = document.getElementById('launcher');
-button.addEventListener('click', () => {
+render(initStaticScene);
+
+const button = document.getElementById("launcher");
+button.addEventListener("click", () => {
   launchGame();
 });
-document.addEventListener('mousemove', (event) => onMouseMove(event));
-document.addEventListener('mouseup', onMouseUp);
+document.addEventListener("mousemove", (event) => onMouseMove(event));
+document.addEventListener("mouseup", onMouseUp);
