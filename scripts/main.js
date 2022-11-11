@@ -17,6 +17,7 @@ import {
   throwDice,
   displayEndGame,
   getSelectedObject,
+  resetGame,
 } from './utilsfunctions.js';
 
 let isGameStart = false;
@@ -39,12 +40,7 @@ const onMouseUp = () => {
 
 const launchGame = () => {
   isGameStart = true;
-  if (scene.children.length > 3) {
-    for (let i = 0; i < 5; i++) {
-      scene.children.pop();
-      rigidBody_List.pop();
-    }
-  }
+  resetGame(scene, rigidBody_List, 5);
 };
 
 Ammo().then((Ammo) => {
