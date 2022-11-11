@@ -104,3 +104,12 @@ export const getSelectedObject = (objectsTouched) => {
 
   return 'no object selected';
 };
+
+export const resetGame = (scene, rigidBody_List, dicesInGame) => {
+  if (scene.children.length > 3) {
+    for (let i = 0; i < dicesInGame; i++) {
+      scene.children.pop();
+      rigidBody_List.pop();
+    }
+  }
+};
