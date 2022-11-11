@@ -38,8 +38,8 @@ const isDiceStopMoving = (rigidBody_List) => {
   return result;
 };
 
-export const displayEndGame = (scene, rigidBody_List, areDiceCast) => {
-  if (areDiceCast && isDiceStopMoving(rigidBody_List)) {
+export const displayEndGame = (scene, rigidBody_List) => {
+  if (isDiceStopMoving(rigidBody_List)) {
     for (let i = 0; i < 5; i++) {
       console.log(
         `dice-${i + 1} : `,
@@ -50,7 +50,7 @@ export const displayEndGame = (scene, rigidBody_List, areDiceCast) => {
 
     return false;
   } else {
-    return areDiceCast;
+    return true;
   }
 };
 
@@ -103,13 +103,4 @@ export const getSelectedObject = (objectsTouched) => {
   }
 
   return 'no object selected';
-};
-
-export const resetGame = (scene, rigidBody_List, dicesInGame) => {
-  if (scene.children.length > 3) {
-    for (let i = 0; i < dicesInGame; i++) {
-      scene.children.pop();
-      rigidBody_List.pop();
-    }
-  }
 };
