@@ -1,25 +1,25 @@
-import * as THREE from "three";
-import Ammo from "./ammo.js";
+import * as THREE from 'three';
+import Ammo from './ammo.js';
 import {
   scene,
   camera,
   renderer,
   clock,
   initGraphicsUniverse,
-} from "./graphicsUniverse.js";
+} from './graphicsUniverse.js';
 import {
   initPhysicsUniverse,
   updatePhysicsUniverse,
   createPhysicTrackGround,
-} from "./physicsUniverse.js";
-import { createDices, createGraphicDiceTrack } from "./meshes.js";
+} from './physicsUniverse.js';
+import { createDices, createGraphicDiceTrack } from './meshes.js';
 import {
   rollDice,
   throwDice,
   displayEndGame,
   getSelectedObject,
   resetGame,
-} from "./utilsfunctions.js";
+} from './utilsfunctions.js';
 
 let isGameRunning = false;
 let isGameStart = false;
@@ -78,6 +78,7 @@ const startAmmo = () => {
           physicsUniverse = null;
           tmpTransformation = null;
           rigidBody_List = new Array();
+          button.removeAttribute('disabled');
 
           return;
         } else {
@@ -102,15 +103,16 @@ const startAmmo = () => {
 const launchGame = () => {
   isGameRunning = true;
   isGameStart = true;
+  button.setAttribute('disabled', true);
   resetGame(scene, rigidBody_List, 5);
   startAmmo();
 };
 
 render(initStaticScene);
 
-const button = document.getElementById("launcher");
-button.addEventListener("click", () => {
+const button = document.getElementById('launcher');
+button.addEventListener('click', () => {
   launchGame();
 });
-document.addEventListener("mousemove", (event) => onMouseMove(event));
-document.addEventListener("mouseup", onMouseUp);
+document.addEventListener('mousemove', (event) => onMouseMove(event));
+document.addEventListener('mouseup', onMouseUp);
