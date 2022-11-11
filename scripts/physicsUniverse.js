@@ -149,3 +149,35 @@ export const CreatePhysicCylinder = (
   mesh.userData.physicsBody = RBody;
   rigidBody_List.push(mesh);
 };
+
+export const createPhysicTrackGround = (
+  Ammo,
+  physicsUniverse,
+  rigidBody_List,
+  mesh
+) => {
+  CreatePhysicCylinder(
+    Ammo,
+    physicsUniverse,
+    rigidBody_List,
+    mesh.children[0],
+    0,
+    null
+  );
+  for (let i = 1; i <= 72; i++) {
+    let angle = Math.PI / 36;
+    createPhysicBox(
+      Ammo,
+      physicsUniverse,
+      rigidBody_List,
+      mesh.children[1].children[i - 1],
+      0,
+      {
+        x: 0,
+        y: Math.sin((angle * i) / 2),
+        z: 0,
+        w: Math.cos((angle * i) / 2),
+      }
+    );
+  }
+};
