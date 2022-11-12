@@ -69,7 +69,6 @@ export const createDices = (Ammo, physicsUniverse, rigidBody_List, scene) => {
 export const createGraphicDiceTrack = () => {
   const diceTrack = new THREE.Group();
   diceTrack.name = 'diceTrack';
-  diceTrack.userData.selected = true;
 
   const loader = new GLTFLoader();
   loader.load(
