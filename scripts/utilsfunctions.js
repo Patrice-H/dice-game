@@ -94,15 +94,15 @@ export const getRandomPosition = () => {
 
 export const getSelectedObject = (objectsTouched) => {
   if (objectsTouched.length === 0) {
-    return "no object selected";
+    return;
   }
   for (let i = 0; i < objectsTouched.length; i++) {
     if (objectsTouched[i].object.parent.userData.selected) {
-      return objectsTouched[i].object.parent.name;
+      return objectsTouched[i].object.parent;
     }
   }
 
-  return "no object selected";
+  return;
 };
 
 export const resetGame = (scene, rigidBody_List, dicesInGame) => {
