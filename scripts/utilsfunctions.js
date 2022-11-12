@@ -24,9 +24,9 @@ const getResults = (rotation) => {
   return result.display;
 };
 
-const isDiceStopMoving = (rigidBody_List) => {
+const isDiceStopMoving = (rigidBody_List, dicesInGame) => {
   let result = true;
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < dicesInGame; i++) {
     if (
       !rigidBody_List[i + 73] ||
       rigidBody_List[i + 73].userData.physicsBody.isActive()
@@ -38,9 +38,9 @@ const isDiceStopMoving = (rigidBody_List) => {
   return result;
 };
 
-export const displayEndGame = (scene, rigidBody_List) => {
-  if (isDiceStopMoving(rigidBody_List)) {
-    for (let i = 0; i < 5; i++) {
+export const displayEndGame = (scene, rigidBody_List, dicesInGame) => {
+  if (isDiceStopMoving(rigidBody_List, dicesInGame)) {
+    for (let i = 0; i < dicesInGame; i++) {
       console.log(
         `dice-${i + 1} : `,
         getResults(scene.children[i + 3].rotation)

@@ -76,7 +76,7 @@ const startAmmo = () => {
         );
         rollDice(Ammo, rigidBody_List);
         throwDice(Ammo, rigidBody_List);
-        isGameRunning = displayEndGame(scene, rigidBody_List);
+        isGameRunning = displayEndGame(scene, rigidBody_List, 5);
         if (!isGameRunning) {
           physicsUniverse = null;
           tmpTransformation = null;
