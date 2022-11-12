@@ -1,4 +1,3 @@
-import * as THREE from "three";
 import Ammo from "./ammo.js";
 import {
   scene,
@@ -17,32 +16,15 @@ import {
   rollDice,
   throwDice,
   displayEndGame,
-  getSelectedObject,
   resetGame,
 } from "./utilsfunctions.js";
+import { onMouseMove, onMouseUp } from "./mouseManager.js";
 
 let isGameRunning = false;
 let isGameStart = false;
 let rigidBody_List = new Array();
 let physicsUniverse = null;
 let tmpTransformation = null;
-
-const mouse = new THREE.Vector2();
-const raycaster = new THREE.Raycaster();
-
-const onMouseMove = (event) => {
-  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-  mouse.y = -((event.clientY / window.innerHeight) * 2 - 1);
-};
-
-const onMouseUp = () => {
-  raycaster.setFromCamera(mouse, camera);
-  const objectsTouched = raycaster.intersectObjects(scene.children);
-  const selectedObject = getSelectedObject(objectsTouched);
-  if (selectedObject !== undefined) {
-    console.log(selectedObject.name);
-  }
-};
 
 const render = (f) => {
   renderer.render(scene, camera);
@@ -118,4 +100,4 @@ button.addEventListener("click", () => {
   launchGame();
 });
 document.addEventListener("mousemove", (event) => onMouseMove(event));
-document.addEventListener("mouseup", onMouseUp);
+document.addEventListener("mouseup", () => onMouseUp(scene, camera));
