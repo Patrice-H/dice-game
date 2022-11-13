@@ -19,12 +19,14 @@ import {
   resetGame,
   getGlobalResults,
   saveResults,
+  displayDice,
 } from './utilsfunctions.js';
 import { onMouseMove, onMouseUp } from './mouseManager.js';
 
 let isGameRunning = false;
 let isGameStart = false;
 let rigidBody_List = new Array();
+let reserve = new Array();
 let gameResults;
 let physicsUniverse = null;
 let tmpTransformation = null;
@@ -69,6 +71,7 @@ const startAmmo = () => {
           gameResults = getGlobalResults(scene, 5);
           saveResults(scene, gameResults);
           console.log(gameResults);
+          //reserve = (dice, reserve);
           button.removeAttribute('disabled');
 
           return;
@@ -108,4 +111,11 @@ button.addEventListener('click', () => {
 document.addEventListener('mousemove', (event) =>
   onMouseMove(event, scene, camera)
 );
-document.addEventListener('mouseup', () => onMouseUp(scene, camera));
+document.addEventListener('mouseup', () => {
+  let temp = onMouseUp(reserve, scene, camera);
+  if (!reserve.includes(temp) && temp !== undefined) {
+    reserve.push(temp);
+    displayDice(temp);
+  }
+  //console.log(reserve);
+});

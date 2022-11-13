@@ -121,6 +121,23 @@ export const getSelectedObject = (objectsTouched) => {
   return;
 };
 
+export const putInReserve = (dice, reserve) => {
+  if (dice === undefined) {
+    return reserve;
+  }
+  let newReserve = reserve;
+  console.log('reserve : ', newReserve);
+  return newReserve.push(dice);
+};
+
+export const displayDice = (dice) => {
+  let reserve = document.getElementById('reserve');
+  let img = document.createElement('img');
+  let number = dice.userData.result;
+  img.setAttribute('src', `../assets/dice-${number}.png`);
+  reserve.appendChild(img);
+};
+
 export const resetGame = (scene, rigidBody_List, dicesInGame) => {
   if (scene.children.length > 3) {
     for (let i = 0; i < dicesInGame; i++) {
