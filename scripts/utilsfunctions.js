@@ -1,5 +1,5 @@
-import * as THREE from "three";
-import { diceRotation } from "../data/rotation.js";
+import * as THREE from 'three';
+import { diceRotation } from '../data/rotation.js';
 
 const controlRotation = (rot) => {
   if (rot === -3.14) return true;
@@ -46,18 +46,28 @@ export const displayEndGame = (scene, rigidBody_List, dicesInGame) => {
         getResults(scene.children[i + 3].rotation)
       );
     }
-    console.log("end game !");
-
+    console.log('end game !');
     return false;
   } else {
     return true;
   }
 };
 
+export const getGlobalResults = (scene, dicesInGame) => {
+  let globalResults = new Array();
+  let diceResult;
+  for (let i = 0; i < dicesInGame; i++) {
+    diceResult = getResults(scene.children[i + 3].rotation);
+    globalResults.push(diceResult);
+  }
+
+  return globalResults;
+};
+
 export const rollDice = (Ammo, rigidBody_List) => {
   const angle = new Ammo.btVector3(0, 0, -8);
   for (let i = 0; i < rigidBody_List.length; i++) {
-    if (rigidBody_List[i].userData.name === "dice") {
+    if (rigidBody_List[i].userData.name === 'dice') {
       if (
         rigidBody_List[i].position.y >
         rigidBody_List[i].scale.x * Math.sqrt(3)
