@@ -49,10 +49,14 @@ button:disabled:hover {
 #reserve {
   margin: auto;
   width: 280px;
-  height: 60px;
+  height: 56px;
   background-color: darkblue;
   border: solid 5px darkgrey;
   border-radius: 10px;
+}
+#reserve img {
+  width: 20%;
+  height: auto;
 }
 #reserve:hover {
   border-color: yellow;
