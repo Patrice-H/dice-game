@@ -64,6 +64,12 @@ export const getGlobalResults = (scene, dicesInGame) => {
   return globalResults;
 };
 
+export const saveResults = (scene, results) => {
+  for (let i = 0; i < results.length; i++) {
+    scene.children[i + 3].userData.result = results[i];
+  }
+};
+
 export const rollDice = (Ammo, rigidBody_List) => {
   const angle = new Ammo.btVector3(0, 0, -8);
   for (let i = 0; i < rigidBody_List.length; i++) {

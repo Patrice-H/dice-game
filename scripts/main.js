@@ -18,6 +18,7 @@ import {
   displayEndGame,
   resetGame,
   getGlobalResults,
+  saveResults,
 } from './utilsfunctions.js';
 import { onMouseMove, onMouseUp } from './mouseManager.js';
 
@@ -66,6 +67,7 @@ const startAmmo = () => {
           tmpTransformation = null;
           rigidBody_List = new Array();
           gameResults = getGlobalResults(scene, 5);
+          saveResults(scene, gameResults);
           console.log(gameResults);
           button.removeAttribute('disabled');
 
@@ -103,5 +105,7 @@ const button = document.getElementById('launcher');
 button.addEventListener('click', () => {
   launchGame();
 });
-document.addEventListener('mousemove', (event) => onMouseMove(event));
+document.addEventListener('mousemove', (event) =>
+  onMouseMove(event, scene, camera)
+);
 document.addEventListener('mouseup', () => onMouseUp(scene, camera));
