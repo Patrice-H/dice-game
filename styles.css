@@ -43,32 +43,38 @@ button:disabled:hover {
 }
 #game-elements {
   position: absolute;
-  top: 50px;
+  top: 27px;
   width: 100%;
 }
 #reserve {
   margin: auto;
-  width: 280px;
-  height: 56px;
+  width: 260px;
+  height: 52px;
   background-color: darkblue;
   border: solid 5px darkgrey;
   border-radius: 10px;
 }
 #reserve img {
-  width: 20%;
+  position: relative;
+  width: 50px;
   height: auto;
+  border: solid 1px transparent;
+  z-index: 1;
 }
-#reserve:hover {
+#reserve img:hover {
   border-color: yellow;
+  cursor: pointer;
 }
 #reserve-legend {
   position: absolute;
   left: 0;
   font-family: 'Roboto';
   font-weight: bold;
-  font-size: 24px;
+  font-size: 48px;
   width: 100%;
   text-align: center;
-  color: lightblue;
-  margin: 16px 0;
+  color: darkgray;
+  opacity: 0.5;
+  margin: -3px 0;
+  z-index: 0;
 }
