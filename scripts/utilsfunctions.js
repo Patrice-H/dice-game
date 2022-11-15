@@ -154,11 +154,10 @@ export const displayDice = (dice, scene) => {
   reserve.appendChild(img);
 };
 
-export const resetGame = (scene, rigidBody_List, dicesInGame) => {
+export const resetGame = (scene, dicesInGame) => {
   if (scene.children.length > 3) {
     for (let i = 0; i < dicesInGame; i++) {
       scene.children.pop();
-      rigidBody_List.pop();
     }
   }
 };

@@ -100,7 +100,7 @@ const launchGame = () => {
   isGameRunning = true;
   isGameStart = true;
   button.setAttribute('disabled', true);
-  resetGame(scene, rigidBody_List, 5 - reserve.length);
+  resetGame(scene, 5 - reserve.length);
   startAmmo();
 };
 
