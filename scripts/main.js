@@ -51,13 +51,7 @@ const startAmmo = () => {
       const runGame = () => {
         let deltaTime = clock.getDelta();
         if (isGameStart) {
-          createDices(
-            Ammo,
-            physicsUniverse,
-            rigidBody_List,
-            scene,
-            5 - reserve.length
-          );
+          createDices(Ammo, physicsUniverse, rigidBody_List, scene, reserve);
         }
         isGameStart = false;
         updatePhysicsUniverse(
@@ -126,6 +120,6 @@ document.addEventListener('mouseup', () => {
     let children = scene.children.filter((dice) => dice.uuid !== temp.uuid);
     scene.children = children;
     console.log(children);
-    displayDice(temp);
+    displayDice(temp, scene);
   }
 });

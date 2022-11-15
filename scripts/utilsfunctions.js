@@ -42,7 +42,7 @@ export const displayEndGame = (scene, rigidBody_List, dicesInGame) => {
   if (isDiceStopMoving(rigidBody_List, dicesInGame)) {
     for (let i = 0; i < dicesInGame; i++) {
       console.log(
-        `dice-${i + 1} : `,
+        `${scene.children[i + 3].name} : `,
         getResults(scene.children[i + 3].rotation)
       );
     }
@@ -130,11 +130,27 @@ export const putInReserve = (dice, reserve) => {
   return newReserve.push(dice);
 };
 
-export const displayDice = (dice) => {
+const playDice = (dice, scene) => {
+  let reserve = document.getElementById('reserve');
+  let addingDice = document.getElementById(dice.name);
+  let children = scene.children;
+  reserve.removeChild(addingDice);
+  children.push(dice);
+  scene.children = children;
+  //console.log(dice.name);
+};
+
+export const displayDice = (dice, scene) => {
   let reserve = document.getElementById('reserve');
   let img = document.createElement('img');
-  let number = dice.userData.result;
-  img.setAttribute('src', `../assets/dice-${number}.png`);
+  let result = dice.userData.result;
+  let id = dice.name;
+  img.setAttribute('id', id);
+  img.setAttribute('src', `../assets/dice-${result}.png`);
+  img.addEventListener('click', (e) => {
+    e.preventDefault();
+    playDice(dice, scene);
+  });
   reserve.appendChild(img);
 };
 

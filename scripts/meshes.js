@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'gltfLoader';
-import { createPhysicBox, CreatePhysicCylinder } from './physicsUniverse.js';
+import { createPhysicBox } from './physicsUniverse.js';
 import { getRandonRotation } from '../data/randomRotation.js';
 import { getRandomPosition } from './utilsfunctions.js';
 
@@ -22,8 +22,17 @@ export const createDices = (
   physicsUniverse,
   rigidBody_List,
   scene,
-  dicesInGame
+  reserve
 ) => {
+  const dicesInGame = 5 - reserve.length;
+  let names = ['dice-1', 'dice-2', 'dice-3', 'dice-4', 'dice-5'];
+  let diceNames = new Array();
+  for (let i = 0; i < names.length; i++) {
+    let found = reserve.find((dice) => dice.name === `dice-${i + 1}`);
+    if (found === undefined) {
+      diceNames.push(`dice-${i + 1}`);
+    }
+  }
   const randomPosition = getRandomPosition();
   for (let i = 0; i < dicesInGame; i++) {
     let posX, posY, posZ;
@@ -53,7 +62,7 @@ export const createDices = (
         const dice = gltf.scene.children[0];
         dice.scale.set(2, 2, 2);
         dice.position.set(posX, posY, posZ);
-        dice.name = `dice-${i + 1}`;
+        dice.name = diceNames[i];
         dice.userData.selected = true;
         scene.add(dice);
         const randomRotation = getRandonRotation();
