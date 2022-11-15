@@ -51,7 +51,13 @@ const startAmmo = () => {
       const runGame = () => {
         let deltaTime = clock.getDelta();
         if (isGameStart) {
-          createDices(Ammo, physicsUniverse, rigidBody_List, scene);
+          createDices(
+            Ammo,
+            physicsUniverse,
+            rigidBody_List,
+            scene,
+            5 - reserve.length
+          );
         }
         isGameStart = false;
         updatePhysicsUniverse(
@@ -62,12 +68,16 @@ const startAmmo = () => {
         );
         rollDice(Ammo, rigidBody_List);
         throwDice(Ammo, rigidBody_List);
-        isGameRunning = displayEndGame(scene, rigidBody_List, 5);
+        isGameRunning = displayEndGame(
+          scene,
+          rigidBody_List,
+          5 - reserve.length
+        );
         if (!isGameRunning) {
           physicsUniverse = null;
           tmpTransformation = null;
           rigidBody_List = new Array();
-          gameResults = getGlobalResults(scene, 5);
+          gameResults = getGlobalResults(scene, 5 - reserve.length);
           saveResults(scene, gameResults);
           console.log(gameResults, reserve);
           button.removeAttribute('disabled');
@@ -96,7 +106,7 @@ const launchGame = () => {
   isGameRunning = true;
   isGameStart = true;
   button.setAttribute('disabled', true);
-  resetGame(scene, rigidBody_List, 5);
+  resetGame(scene, rigidBody_List, 5 - reserve.length);
   startAmmo();
 };
 
@@ -113,6 +123,9 @@ document.addEventListener('mouseup', () => {
   let temp = onMouseUp(reserve, scene, camera);
   if (!reserve.includes(temp) && temp !== null && temp !== undefined) {
     reserve.push(temp);
+    let children = scene.children.filter((dice) => dice.uuid !== temp.uuid);
+    scene.children = children;
+    console.log(children);
     displayDice(temp);
   }
 });

@@ -17,9 +17,15 @@ const createGraphicBox = (scale, position) => {
   return mesh;
 };
 
-export const createDices = (Ammo, physicsUniverse, rigidBody_List, scene) => {
+export const createDices = (
+  Ammo,
+  physicsUniverse,
+  rigidBody_List,
+  scene,
+  dicesInGame
+) => {
   const randomPosition = getRandomPosition();
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < dicesInGame; i++) {
     let posX, posY, posZ;
     if (i === 0) {
       posX = randomPosition.x;
