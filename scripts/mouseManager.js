@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { getSelectedObject, putInReserve } from './utilsfunctions.js';
+import { getSelectedObject } from './utilsfunctions.js';
 
 const mouse = new THREE.Vector2();
 const raycaster = new THREE.Raycaster();
@@ -21,9 +21,13 @@ export const onMouseUp = (reserve, scene, camera) => {
   raycaster.setFromCamera(mouse, camera);
   const objectsTouched = raycaster.intersectObjects(scene.children);
   const selectedObject = getSelectedObject(objectsTouched);
-  if (selectedObject !== undefined && reserve.length < 5) {
+  if (
+    selectedObject !== undefined &&
+    selectedObject.userData.result !== undefined &&
+    reserve.length < 5
+  ) {
     return selectedObject;
   } else {
-    return;
+    return null;
   }
 };

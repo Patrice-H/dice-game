@@ -41,7 +41,6 @@ const initStaticScene = () => {
     const diceTrack = createGraphicDiceTrack();
     scene.add(diceTrack);
     initGraphicsUniverse();
-    //console.log(scene);
   }
   render(initStaticScene);
 };
@@ -70,8 +69,7 @@ const startAmmo = () => {
           rigidBody_List = new Array();
           gameResults = getGlobalResults(scene, 5);
           saveResults(scene, gameResults);
-          console.log(gameResults);
-          //reserve = (dice, reserve);
+          console.log(gameResults, reserve);
           button.removeAttribute('disabled');
 
           return;
@@ -113,9 +111,8 @@ document.addEventListener('mousemove', (event) =>
 );
 document.addEventListener('mouseup', () => {
   let temp = onMouseUp(reserve, scene, camera);
-  if (!reserve.includes(temp) && temp !== undefined) {
+  if (!reserve.includes(temp) && temp !== null && temp !== undefined) {
     reserve.push(temp);
     displayDice(temp);
   }
-  //console.log(reserve);
 });
