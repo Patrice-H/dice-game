@@ -10,8 +10,19 @@ export const onMouseMove = (event, scene, camera) => {
   raycaster.setFromCamera(mouse, camera);
   const objectsTouched = raycaster.intersectObjects(scene.children);
   const selectedObject = getSelectedObject(objectsTouched);
-  if (selectedObject !== undefined) {
+  let dices = scene.children.filter(
+    (object) => object.userData.name === 'dice'
+  );
+  dices.forEach((dice) => {
+    if (dice.children[0].material.emissive.g !== 0) {
+      dice.children[0].material.emissive.g = 0;
+      dice.children[0].material.emissive.r = 0;
+    }
+  });
+  if (selectedObject !== undefined && selectedObject.userData.selected) {
     document.body.style = 'cursor: pointer;';
+    selectedObject.children[0].material.emissive.g = 0.2;
+    selectedObject.children[0].material.emissive.r = 0.2;
   } else {
     document.body.style = 'cursor: default;';
   }
