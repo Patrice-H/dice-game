@@ -19,7 +19,6 @@ import {
   resetGame,
   getGlobalResults,
   saveResults,
-  displayDice,
 } from './utilsfunctions.js';
 import { onMouseMove, onMouseUp } from './mouseManager.js';
 
@@ -114,12 +113,5 @@ document.addEventListener('mousemove', (event) =>
   onMouseMove(event, scene, camera)
 );
 document.addEventListener('mouseup', () => {
-  let temp = onMouseUp(reserve, scene, camera);
-  if (!reserve.includes(temp) && temp !== null && temp !== undefined) {
-    reserve.push(temp);
-    let children = scene.children.filter((dice) => dice.uuid !== temp.uuid);
-    scene.children = children;
-    console.log(children);
-    displayDice(temp, scene);
-  }
+  reserve = onMouseUp(reserve, scene, camera);
 });
