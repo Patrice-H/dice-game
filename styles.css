@@ -62,7 +62,7 @@ button:disabled:hover {
   border: solid 1px transparent;
   z-index: 1;
 }
-#reserve img:hover {
+#reserve img.reserved-dice:hover {
   border-color: yellow;
   cursor: pointer;
 }
