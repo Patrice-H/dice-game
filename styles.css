@@ -58,6 +58,7 @@ button:disabled:hover {
   position: relative;
   width: 50px;
   height: auto;
+  margin-right: -4px;
   border: solid 1px transparent;
   z-index: 1;
 }
