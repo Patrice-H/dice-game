@@ -154,6 +154,13 @@ export const displayDice = (dice, scene) => {
   reserve.appendChild(img);
 };
 
+export const displayDiceInReserve = (dice, position) => {
+  let img = document.getElementById(`dice-position-${position}`);
+  let result = dice.userData.result;
+  img.setAttribute('src', `../assets/dice-${result}.png`);
+  img.classList.add('reserved-dice');
+};
+
 export const resetGame = (scene, dicesInGame) => {
   if (scene.children.length > 3) {
     for (let i = 0; i < dicesInGame; i++) {
