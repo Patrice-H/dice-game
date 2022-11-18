@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { displayDice, getSelectedObject } from './utilsfunctions.js';
+import { displayDiceInReserve, getSelectedObject } from './utilsfunctions.js';
 
 const mouse = new THREE.Vector2();
 const raycaster = new THREE.Raycaster();
@@ -43,7 +43,7 @@ export const onMouseUp = (reserve, scene, camera) => {
       (dice) => dice.uuid !== selectedObject.uuid
     );
     scene.children = children;
-    displayDice(selectedObject, scene);
+    displayDiceInReserve(selectedObject, reserve.length - 1);
   }
 
   return reserve;
