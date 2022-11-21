@@ -115,3 +115,13 @@ document.addEventListener('mousemove', (event) =>
 document.addEventListener('mouseup', () => {
   reserve = onMouseUp(reserve, scene, camera);
 });
+for (let i = 0; i < 5; i++) {
+  let diceReserved = document.getElementById(`dice-position-${i}`);
+  diceReserved.addEventListener('click', () => {
+    if (reserve[i] !== undefined) {
+      console.log(reserve[i].userData.result);
+    } else {
+      console.log('no dice');
+    }
+  });
+}
