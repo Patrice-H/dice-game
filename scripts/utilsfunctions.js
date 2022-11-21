@@ -121,15 +121,6 @@ export const getSelectedObject = (objectsTouched) => {
   return;
 };
 
-export const putInReserve = (dice, reserve) => {
-  if (dice === undefined) {
-    return reserve;
-  }
-  let newReserve = reserve;
-  console.log('reserve : ', newReserve);
-  return newReserve.push(dice);
-};
-
 export const displayDiceInReserve = (dice, position) => {
   let img = document.getElementById(`dice-position-${position}`);
   let result = dice.userData.result;
