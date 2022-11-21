@@ -152,3 +152,17 @@ export const getDicesOnScene = (scene) => {
 
   return dices;
 };
+
+export const getOccupiedPositionOnScene = (dices) => {
+  let occupiedPosition = new Array();
+  dices.forEach((dice) => {
+    if (dice.position.z < 5 && dice.position.z > -5) {
+      occupiedPosition.push(dice.position.x);
+    }
+  });
+  if (occupiedPosition.length > 0) {
+    occupiedPosition.sort((a, b) => a - b);
+  }
+
+  return occupiedPosition;
+};
