@@ -140,3 +140,15 @@ export const resetGame = (scene, dicesInGame) => {
     }
   }
 };
+
+export const getDicesOnScene = (scene) => {
+  let dices = new Array();
+  const iterator = scene.children.keys();
+  for (let key of iterator) {
+    if (key > 2) {
+      dices.push(scene.children[key]);
+    }
+  }
+
+  return dices;
+};
