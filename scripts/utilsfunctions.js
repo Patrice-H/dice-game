@@ -137,6 +137,11 @@ export const displayDiceInReserve = (dice, position) => {
   img.classList.add('reserved-dice');
 };
 
+export const removeDiceOnScene = (scene, dice) => {
+  let children = scene.children.filter((object) => object.uuid !== dice.uuid);
+  scene.children = children;
+};
+
 export const resetGame = (scene, dicesInGame) => {
   if (scene.children.length > 3) {
     for (let i = 0; i < dicesInGame; i++) {
