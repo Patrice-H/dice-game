@@ -166,3 +166,31 @@ export const getOccupiedPositionOnScene = (dices) => {
 
   return occupiedPosition;
 };
+
+export const getFreeSectors = (occupiedPosition) => {
+  let freeSectors = new Array();
+  if (occupiedPosition.length === 0) {
+    freeSectors.push([-20, 20]);
+  }
+  if (occupiedPosition.length === 1) {
+    freeSectors.push([-20, occupiedPosition[0] - 5]);
+    freeSectors.push([occupiedPosition[0] + 5, 20]);
+  }
+  if (occupiedPosition.length > 1) {
+    for (let i = 0; i < occupiedPosition.length; i++) {
+      if (i === 0) {
+        freeSectors.push([-20, occupiedPosition[i] - 5]);
+      } else {
+        freeSectors.push([
+          occupiedPosition[i - 1] + 5,
+          occupiedPosition[i] - 5,
+        ]);
+        if (i === occupiedPosition.length - 1) {
+          freeSectors.push([occupiedPosition[i] + 5, 20]);
+        }
+      }
+    }
+  }
+
+  return freeSectors;
+};
