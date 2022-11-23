@@ -38,6 +38,86 @@ const isDiceStopMoving = (rigidBody_List, dicesInGame) => {
   return result;
 };
 
+const getDicesOnScene = (scene) => {
+  let dices = new Array();
+  const iterator = scene.children.keys();
+  for (let key of iterator) {
+    if (key > 2) {
+      dices.push(scene.children[key]);
+    }
+  }
+
+  return dices;
+};
+
+const getOccupiedPositionOnScene = (dices) => {
+  let occupiedPosition = new Array();
+  dices.forEach((dice) => {
+    if (dice.position.z < 5 && dice.position.z > -5) {
+      occupiedPosition.push(dice.position.x);
+    }
+  });
+  if (occupiedPosition.length > 0) {
+    occupiedPosition.sort((a, b) => a - b);
+  }
+
+  return occupiedPosition;
+};
+
+const getFreeSectors = (occupiedPosition) => {
+  let freeSectors = new Array();
+  if (occupiedPosition.length === 0) {
+    freeSectors.push([-20, 20]);
+  }
+  if (occupiedPosition.length === 1) {
+    freeSectors.push([-20, occupiedPosition[0] - 5]);
+    freeSectors.push([occupiedPosition[0] + 5, 20]);
+  }
+  if (occupiedPosition.length > 1) {
+    for (let i = 0; i < occupiedPosition.length; i++) {
+      if (i === 0) {
+        freeSectors.push([-20, occupiedPosition[i] - 5]);
+      } else {
+        freeSectors.push([
+          occupiedPosition[i - 1] + 5,
+          occupiedPosition[i] - 5,
+        ]);
+        if (i === occupiedPosition.length - 1) {
+          freeSectors.push([occupiedPosition[i] + 5, 20]);
+        }
+      }
+    }
+  }
+
+  return freeSectors;
+};
+
+const getFreePositionOnScene = (scene) => {
+  const posY = 2.0599331855773926;
+  const posZ = 0;
+  let posX = 0;
+  let rangeValue = 0;
+  const dicesOnScene = getDicesOnScene(scene);
+  const occupiedPosition = getOccupiedPositionOnScene(dicesOnScene);
+  const freeSectors = getFreeSectors(occupiedPosition);
+  freeSectors.forEach((sector) => {
+    if (sector[1] - sector[0] > rangeValue) {
+      rangeValue = sector[1] - sector[0];
+      posX = (sector[0] + sector[1]) / 2;
+    }
+  });
+
+  return new THREE.Vector3(posX, posY, posZ);
+};
+
+export const resetGame = (scene, dicesInGame) => {
+  if (scene.children.length > 3) {
+    for (let i = 0; i < dicesInGame; i++) {
+      scene.children.pop();
+    }
+  }
+};
+
 export const displayEndGame = (scene, rigidBody_List, dicesInGame) => {
   if (isDiceStopMoving(rigidBody_List, dicesInGame)) {
     for (let i = 0; i < dicesInGame; i++) {
@@ -121,89 +201,17 @@ export const getSelectedObject = (objectsTouched) => {
   return;
 };
 
+export const addDiceOnScene = (scene, dice) => {
+  const freePosition = getFreePositionOnScene(scene);
+  let sceneChildren = [...scene.children];
+  dice.position.set(freePosition.x, freePosition.y, freePosition.z);
+  sceneChildren.push(dice);
+  scene.children = sceneChildren;
+};
+
 export const removeDiceOnScene = (scene, dice) => {
   let children = scene.children.filter((object) => object.uuid !== dice.uuid);
   scene.children = children;
-};
-
-export const resetGame = (scene, dicesInGame) => {
-  if (scene.children.length > 3) {
-    for (let i = 0; i < dicesInGame; i++) {
-      scene.children.pop();
-    }
-  }
-};
-
-const getDicesOnScene = (scene) => {
-  let dices = new Array();
-  const iterator = scene.children.keys();
-  for (let key of iterator) {
-    if (key > 2) {
-      dices.push(scene.children[key]);
-    }
-  }
-
-  return dices;
-};
-
-const getOccupiedPositionOnScene = (dices) => {
-  let occupiedPosition = new Array();
-  dices.forEach((dice) => {
-    if (dice.position.z < 5 && dice.position.z > -5) {
-      occupiedPosition.push(dice.position.x);
-    }
-  });
-  if (occupiedPosition.length > 0) {
-    occupiedPosition.sort((a, b) => a - b);
-  }
-
-  return occupiedPosition;
-};
-
-const getFreeSectors = (occupiedPosition) => {
-  let freeSectors = new Array();
-  if (occupiedPosition.length === 0) {
-    freeSectors.push([-20, 20]);
-  }
-  if (occupiedPosition.length === 1) {
-    freeSectors.push([-20, occupiedPosition[0] - 5]);
-    freeSectors.push([occupiedPosition[0] + 5, 20]);
-  }
-  if (occupiedPosition.length > 1) {
-    for (let i = 0; i < occupiedPosition.length; i++) {
-      if (i === 0) {
-        freeSectors.push([-20, occupiedPosition[i] - 5]);
-      } else {
-        freeSectors.push([
-          occupiedPosition[i - 1] + 5,
-          occupiedPosition[i] - 5,
-        ]);
-        if (i === occupiedPosition.length - 1) {
-          freeSectors.push([occupiedPosition[i] + 5, 20]);
-        }
-      }
-    }
-  }
-
-  return freeSectors;
-};
-
-export const getFreePositionOnScene = (scene) => {
-  const posY = 2.0599331855773926;
-  const posZ = 0;
-  let posX = 0;
-  let rangeValue = 0;
-  const dicesOnScene = getDicesOnScene(scene);
-  const occupiedPosition = getOccupiedPositionOnScene(dicesOnScene);
-  const freeSectors = getFreeSectors(occupiedPosition);
-  freeSectors.forEach((sector) => {
-    if (sector[1] - sector[0] > rangeValue) {
-      rangeValue = sector[1] - sector[0];
-      posX = (sector[0] + sector[1]) / 2;
-    }
-  });
-
-  return new THREE.Vector3(posX, posY, posZ);
 };
 
 export const displayDicesInReserve = (reserve) => {
@@ -218,12 +226,4 @@ export const displayDicesInReserve = (reserve) => {
       img.classList.add('reserved-dice');
     }
   }
-};
-
-export const addDiceOnScene = (scene, dice) => {
-  const freePosition = getFreePositionOnScene(scene);
-  let sceneChildren = [...scene.children];
-  dice.position.set(freePosition.x, freePosition.y, freePosition.z);
-  sceneChildren.push(dice);
-  scene.children = sceneChildren;
 };
