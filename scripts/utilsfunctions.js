@@ -212,3 +212,17 @@ export const getFreePositionOnScene = (scene) => {
 
   return new THREE.Vector3(posX, posY, posZ);
 };
+
+export const displayDicesInReserve = (reserve) => {
+  for (let i = 0; i < 5; i++) {
+    let img = document.getElementById(`dice-position-${i}`);
+    if (reserve[i] === undefined) {
+      img.setAttribute('src', `../assets/blank.png`);
+      img.classList.remove('reserved-dice');
+    } else {
+      let result = reserve[i].userData.result;
+      img.setAttribute('src', `../assets/dice-${result}.png`);
+      img.classList.add('reserved-dice');
+    }
+  }
+};
