@@ -141,7 +141,7 @@ export const resetGame = (scene, dicesInGame) => {
   }
 };
 
-export const getDicesOnScene = (scene) => {
+const getDicesOnScene = (scene) => {
   let dices = new Array();
   const iterator = scene.children.keys();
   for (let key of iterator) {
@@ -153,7 +153,7 @@ export const getDicesOnScene = (scene) => {
   return dices;
 };
 
-export const getOccupiedPositionOnScene = (dices) => {
+const getOccupiedPositionOnScene = (dices) => {
   let occupiedPosition = new Array();
   dices.forEach((dice) => {
     if (dice.position.z < 5 && dice.position.z > -5) {
@@ -167,7 +167,7 @@ export const getOccupiedPositionOnScene = (dices) => {
   return occupiedPosition;
 };
 
-export const getFreeSectors = (occupiedPosition) => {
+const getFreeSectors = (occupiedPosition) => {
   let freeSectors = new Array();
   if (occupiedPosition.length === 0) {
     freeSectors.push([-20, 20]);
@@ -193,4 +193,22 @@ export const getFreeSectors = (occupiedPosition) => {
   }
 
   return freeSectors;
+};
+
+export const getFreePositionOnScene = (scene) => {
+  const posY = 2.0599331855773926;
+  const posZ = 0;
+  let posX = 0;
+  let rangeValue = 0;
+  const dicesOnScene = getDicesOnScene(scene);
+  const occupiedPosition = getOccupiedPositionOnScene(dicesOnScene);
+  const freeSectors = getFreeSectors(occupiedPosition);
+  freeSectors.forEach((sector) => {
+    if (sector[1] - sector[0] > rangeValue) {
+      rangeValue = sector[1] - sector[0];
+      posX = (sector[0] + sector[1]) / 2;
+    }
+  });
+
+  return new THREE.Vector3(posX, posY, posZ);
 };
