@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import {
-  displayDiceInReserve,
+  displayDicesInReserve,
   getSelectedObject,
   removeDiceOnScene,
 } from './utilsfunctions.js';
@@ -44,7 +44,7 @@ export const onMouseUp = (reserve, scene, camera) => {
   ) {
     reserve.push(selectedObject);
     removeDiceOnScene(scene, selectedObject);
-    displayDiceInReserve(selectedObject, reserve.length - 1);
+    displayDicesInReserve(reserve);
   }
 
   return reserve;
