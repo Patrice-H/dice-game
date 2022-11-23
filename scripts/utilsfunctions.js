@@ -121,13 +121,6 @@ export const getSelectedObject = (objectsTouched) => {
   return;
 };
 
-export const displayDiceInReserve = (dice, position) => {
-  let img = document.getElementById(`dice-position-${position}`);
-  let result = dice.userData.result;
-  img.setAttribute('src', `../assets/dice-${result}.png`);
-  img.classList.add('reserved-dice');
-};
-
 export const removeDiceOnScene = (scene, dice) => {
   let children = scene.children.filter((object) => object.uuid !== dice.uuid);
   scene.children = children;
