@@ -226,3 +226,11 @@ export const displayDicesInReserve = (reserve) => {
     }
   }
 };
+
+export const addDiceOnScene = (scene, dice) => {
+  const freePosition = getFreePositionOnScene(scene);
+  let sceneChildren = [...scene.children];
+  dice.position.set(freePosition.x, freePosition.y, freePosition.z);
+  sceneChildren.push(dice);
+  scene.children = sceneChildren;
+};
